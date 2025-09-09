@@ -1,25 +1,30 @@
-version: '3.8'
-
+version: "3.9"
 services:
-  web-app:
-    build:
-      context: .
+  web:
+    build: .
+    container_name: flask_app
     ports:
       - "5000:5000"
     depends_on:
       - db
     environment:
-      - PYTHONUNBUFFERED=1
+      - DB_NAME=mydb
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_HOST=db
 
   db:
-    image: postgres:15
-    restart: always
+    image: postgres:14
+    container_name: postgres_db
     environment:
       POSTGRES_DB: mydb
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:
+
